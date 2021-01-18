@@ -1,4 +1,4 @@
-﻿using Microsoft.Win32;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,24 +12,23 @@ namespace autoRunOptions
         static void Main(string[] args)
         {
             RegistryKey rk = Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            
 
-        Start:
 
             String msgCheck = "/check - sprawdzenie programów uruchamianych przy starcie systemu";
             String msgAdd = "/add [nazwa] [ścieżka do pliku] - dodanie pogramu do autostartu";
             String msgDel = "/del [nazwa] - usunięcie programu z autostartu";
-            Console.WriteLine("");
+
             Console.WriteLine("Dostępne polecenie: ");
             Console.WriteLine(msgCheck);
             Console.WriteLine(msgAdd);
             Console.WriteLine(msgDel);
             Console.WriteLine("");
+        Start:
             String a = Console.ReadLine();
 
             void checkList()
             {
-                Console.WriteLine("");
+                
                 Console.WriteLine("Ilosc programów: " + rk.GetValueNames().Length);
                 Console.WriteLine("");
 
@@ -40,8 +39,9 @@ namespace autoRunOptions
                     .ToDictionary(valueName => valueName, valueName => rk.GetValue(valueName).ToString());
                 foreach (String viewAppList in valueNames)
                 {
-                    Console.WriteLine(viewAppList);
+                    Console.WriteLine(viewAppList+"       "+rk.GetValue(viewAppList));
                 }
+                Console.WriteLine("");
             }
 
             void addToList()
@@ -67,6 +67,7 @@ namespace autoRunOptions
                     }
                 }catch(Exception e) { Console.WriteLine(e.Message); }
             }
+
             void removeFromList()
             {
                 String[] sub = a.Split(' ');
